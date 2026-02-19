@@ -49,6 +49,7 @@ Thumbs.db
 
 # Quarto rendering artifacts
 /.quarto/
+manuscripts/*.html
 
 # Output artifacts — uncomment lines below based on your preference
 # *.rds

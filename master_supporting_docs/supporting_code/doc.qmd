@@ -1,0 +1,275 @@
+---
+title: "Ordinal treatment effect of mechanical thrombectomy"
+author: 
+  - name: "Bradley Kolb, MD"
+    affiliation: "Department of Neurosurgery, Rush University Medical Center"
+    email: "[first_last@institution.edu]"
+date: today
+date-format: long
+embed-resources: true
+execute: 
+  warning: false
+  error: false
+  cache: false
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
+    number-sections: true
+    smooth-scroll: true
+    theme: cosmo
+    css: custom.css
+---
+
+Comprehensive evaluation of randomized evidence for mechanical thrombectomy using bayesian implementation of random effects meta-analysis with ordinal data in `stan` using `brms`.
+
+# Dependencies
+
+```{r}
+#| echo: TRUE
+suppressMessages({
+  library(here)
+  library(tidyverse)
+  library(brms)
+  library(posterior)
+  library(bayesplot)
+  library(tinytable)
+  library(ggrepel)
+  library(priorsense)
+})
+```
+
+# Data
+
+```{r}
+
+data_long <- readRDS(here("artifacts", "data_long.rds"))
+```
+
+## Table of observed outcomes pooled across all studies using counts
+
+```{r}
+#| label: tbl-data
+#| tbl-cap: Distribution of 90-day modified Rankin Scale (mRS) outcomes for 8,100 patients enrolled in 30 randomized controlled trials comparing endovascular thrombectomy versus medical therapy alone for acute ischemic stroke (intention-to-treat analysis).
+
+n <- "Values represent number of patients achieving each mRS score at 90 days."
+
+m <- "Recommended health state terms for mRS levels: 0 = normal, 1 = sympotmatic but not disabled, 2 = disabled but independent, 3 = dependent but ambulatory, 4 = not ambulatory nor capable of bodily self-care, 5 = requires constant care, 6 = dead."
+
+o <- "Recommended valence terms for mRS levels: 0 = ideal, 1 = excellent, 2 = good, 3 = fair, 4 = poor, 5 = very poor."
+
+
+data_long %>% 
+  group_by(mrs, treatment) %>% 
+  summarise(count = sum(count), .groups = "drop") %>% 
+  pivot_wider(names_from = mrs, values_from = count) %>% 
+  tt(digits = 2, 
+     notes = list(a = n, b = m, c = o)) %>% 
+  group_tt(j = list("mRS score" = 2:8))
+```
+
+# Ordinal Model
+
+## Model definition and summary of model fit
+
+```{r}
+fit_ordinal <- readRDS(here("artifacts", "fit_ordinal.rds"))
+
+summary(fit_ordinal)
+```
+
+## Trace plots for key parameters
+
+```{r}
+#| label: trace-plots
+#| fig-cap: Trace plots for key parameters
+
+knitr::include_graphics("artifacts/ordinal_trace_plots.svg")
+
+```
+
+## R-hat values
+
+```{r}
+#| label: convergence-values
+#| fig-cap: Convergence statistics
+
+knitr::include_graphics("artifacts/ordinal_convergence_values.svg")
+```
+
+## Posterior predictive check
+
+```{r}
+#| label: posterior-predictive
+#| fig-cap: Posterior predictive check
+
+knitr::include_graphics("artifacts/ordinal_posterior_predictive_check.svg")
+```
+
+## Power scaling sensitivity analysis
+
+```{r}
+#| label: power-scaling
+#| fig-cap: Power scaling sensitivity analysis
+
+knitr::include_graphics("artifacts/ordinal_power_scaling_sensitivity.svg")
+```
+
+# Other Models
+
+## Unequal variance model
+
+```{r}
+fit_uv <- readRDS(here("artifacts", "fit_uv.rds"))
+
+summary(fit_uv)
+```
+
+## Adjacent category model
+
+```{r}
+fit_adjacent <- readRDS(here("artifacts", "fit_adjacent.rds"))
+
+summary(fit_adjacent)
+```
+
+## Binary model using functional independence
+
+```{r}
+fit_bin <- readRDS(here("artifacts", "fit_bin.rds"))
+
+summary(fit_bin)
+```
+
+# Results
+
+```{r}
+draws <- readRDS(here("artifacts", "draws.rds"))
+
+```
+
+## Pooled treatment effect estimates
+
+```{r}
+#| label: tbl-pooled
+#| tbl-cap: Pooled treatment effect estimate across models
+
+draws %>%
+  group_by(model_id) %>%
+  summarise(
+    median = median(b_logOR),
+    q025   = quantile(b_logOR, 0.025),
+    q975   = quantile(b_logOR, 0.975),
+    .groups = "drop"
+  ) %>%
+  tt(digits = 2)
+```
+
+## Predicted treatment effect estimate
+
+```{r}
+#| label: tbl-pte
+#| tbl-cap: Predicted treatment effect of thrombectomy across models. The wider confidence interval compared to @tbl-pooled reflects additional uncertainty when predicting the effect in a new trial population, accounting for variation in pathology, patient selection, procedural techniques, technology, and healthcare systems that was observed in the first 30 trials.
+
+draws %>%
+  group_by(model_id) %>%
+  summarise(
+    median = median(logOR_pred_new_trial),
+    q025   = quantile(logOR_pred_new_trial, 0.025),
+    q975   = quantile(logOR_pred_new_trial, 0.975),
+    .groups = "drop"
+  ) %>%
+  tt(digits = 2)
+
+```
+
+## Between-trial heterogeneity estimates
+
+```{r}
+#| label: tbl-sigma
+#| tbl-cap: Control group heterogeneity ("sigma").
+
+draws %>%
+  group_by(model_id) %>%
+  summarise(
+    median = median(sd_int),
+    q025   = quantile(sd_int, 0.025),
+    q975   = quantile(sd_int, 0.975),
+    .groups = "drop"
+  ) %>%
+  tt(digits = 2, booktabs = TRUE)
+```
+
+```{r}
+#| label: tbl-tau
+#| tbl-cap: Treatment effect heterogeneity ("tau").
+
+draws %>%
+  group_by(model_id) %>%
+  summarise(
+    median = median(sd_trt),
+    q025   = quantile(sd_trt, 0.025),
+    q975   = quantile(sd_trt, 0.975),
+    .groups = "drop"
+  ) %>%
+  tt(digits = 2, booktabs = TRUE)
+```
+
+## Correlation between control group outcomes and treatment effect magnitude estimate
+
+```{r}
+#| label: tbl-rho
+#| tbl-cap: Correlation between control group outcomes and treatment effect magnitude ("rho").
+draws %>%
+  group_by(model_id) %>%
+  summarise(
+    median = median(cor_int_trt),
+    q025   = quantile(cor_int_trt, 0.025),
+    q975   = quantile(cor_int_trt, 0.975),
+    .groups = "drop"
+  ) %>%
+  tt(digits = 2, booktabs = TRUE)
+```
+
+## Publication figures
+
+### Forest plot
+
+```{r}
+#| label: fig-forest
+#| fig-cap: "Posterior medians and 95% credible intervals for trial-specific treatment effects, the pooled average effect, and the predicted effect in a new trial. Estimates are on the log-odds scale (0=no effect; positive=benefit)."
+
+knitr::include_graphics("artifacts/figure_one.svg")
+
+```
+
+### Scatter plot
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "Trial-level association between baseline prognosis and treatment effect. Each point shows a trial’s estimated random intercept (control-group outcome) and random slope (treatment effect), centered at 0 on the log-odds scale. Shaded bands show the 50% and 95% credible regions for the fitted relationship. The intercept–slope correlation was ρ = -0·51 (95% CrI -0·80 to -0·11)."
+
+knitr::include_graphics("artifacts/figure_two.svg")
+```
+
+### Sensitivity analysis
+
+```{r}
+#| label: fig-sensitivity
+#| fig-cap: "Robustness of the intercept–slope correlation (ρ) to model specification. Posterior medians and 95% credible intervals for ρ under the primary proportional-odds ordinal model, an unequal-variance proportional-odds model, an adjacent-category ordinal model, and a binary model (mRS 0-2 vs 3-6). Estimates remain negative across specifications."
+
+knitr::include_graphics("artifacts/figure_three.svg")
+```
+
+### Probability scale relationship
+
+```{r}
+#| label: fig-probability
+#| fig-cap: "Baseline prognosis and absolute benefit in functional independence across model specifications. For each model, points show trials’ posterior median control-group probability of functional independence (x-axis) and posterior median absolute benefit in functional independence due to thrombectomy (y-axis). Functional independence is defined as mRS 0-2. The dashed line indicates no absolute benefit; the smooth curve is a descriptive fit with 95% uncertainty band."
+
+knitr::include_graphics("artifacts/figure_four.svg")
+```
