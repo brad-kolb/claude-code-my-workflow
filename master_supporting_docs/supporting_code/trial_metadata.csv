@@ -1,0 +1,31 @@
+trial,trial_display,year,n_evt,n_control,occlusion,time_window,imaging,population,n_randomized,primary_endpoint,key_feature,notes
+tesla,TESLA,2024,151,146,ICA/M1,≤6 h,NCCT ASPECTS; CTA,Large-core,300,mRS shift 90d,ASPECTS ≤5,
+distal,DISTAL,2025,271,269,Distal/DMVO,≤6 h,CTA,Medium/distal vessel,543,mRS shift 90d,DMVO only,
+escapemevo,ESCAPE-MeVO,2025,255,274,M2/MeVO,≤12 h,CTA; collateral,Medium vessel,530,mRS shift 90d,MeVO only,
+select2,SELECT2,2023,177,171,ICA/M1,≤24 h,NCCT ASPECTS; CTP core,Large-core,352,mRS shift 90d,ASPECTS 3-5 or core ≥50 mL,Stopped early
+therapy,THERAPY,2016,50,46,ICA/M1,≤6 h,CTA,Early-window standard LVO,381,mRS shift 90d,IVT eligible,
+mrcleanlate,MR CLEAN-LATE,2023,253,247,ICA/M1,6-24 h,CTA collateral,Late-window,535,mRS shift 90d,Good collaterals,
+thrace,THRACE,2016,200,202,ICA/M1,≤5 h,CTA,Early-window standard LVO,414,mRS 0-2 90d,IVT eligible,
+piste,PISTE,2017,33,30,ICA/M1,≤6 h,CTA,Early-window standard LVO,65,mRS shift 90d,Pragmatic,
+positive,POSITIVE,2022,12,21,Mixed,≤12 h,CTP mismatch,Late-window/mismatch,202,mRS shift 90d,Perfusion-selected,
+resilient,RESILIENT,2020,111,112,ICA/M1,≤8 h,CTA,Early-window standard LVO,221,mRS 0-2 90d,Public health system,
+defuse3,DEFUSE-3,2018,92,90,ICA/M1,6-16 h,CTP/MRP mismatch,Late-window/mismatch,182,mRS shift 90d,Core <70 mL,
+dawn,DAWN,2018,108,100,ICA/M1,6-24 h,CTP/MRP mismatch,Late-window/mismatch,206,mRS shift 90d,Clinical-core mismatch,Stopped early
+basics,BASICS,2021,154,146,Basilar,≤6 h,CTA/MRA,Basilar artery occlusion,300,mRS shift 90d,BAO only,
+best,BEST,2020,66,65,Basilar,≤8 h,CTA/MRA,Basilar artery occlusion,131,mRS 0-3 90d,BAO only,Stopped early
+baoche,BAOCHE,2022,111,106,Basilar,6-24 h,CTA/MRA,Basilar artery occlusion,217,mRS shift 90d,NIHSS ≥10,
+attention,ATTENTION,2022,225,115,Basilar,≤12 h,CTA/MRA,Basilar artery occlusion,340,mRS shift 90d,BAO only,
+extendia,EXTEND-IA,2015,35,35,ICA/M1,≤6 h,CTP mismatch,Early-window standard LVO,70,mRS shift 90d,Perfusion-selected,
+swiftprime,SWIFT PRIME,2015,98,93,ICA/M1,≤6 h,CTA ± CTP,Early-window standard LVO,196,mRS shift 90d,IVT eligible,
+escape,ESCAPE,2015,163,146,ICA/M1,≤12 h,CTA; collateral,Early-window standard LVO,316,mRS shift 90d,Good collaterals,
+revascat,REVASCAT,2015,103,103,ICA/M1,≤8 h,CTA,Early-window standard LVO,206,mRS shift 90d,ASPECTS ≥7,
+mrclean,MR CLEAN,2015,233,266,ICA/M1,≤6 h,CTA,Early-window standard LVO,500,mRS shift 90d,Pragmatic,
+ims3,IMS III,2013,415,214,ICA/M1,≤6 h,CTA optional,Early-window standard LVO,656,mRS 0-2 90d,IVT eligible,
+synthesis,SYNTHESIS,2013,181,181,Mixed,≤4.5 h,None/standard,Early-window standard LVO,362,mRS 0-1 90d,No CTA requirement,
+mrrescue,MR RESCUE,2013,63,54,ICA/M1,≤8 h,CTP/MRP,Early-window standard LVO,118,mRS shift 90d,Imaging strata,
+rescuejapan,RESCUE-Japan LIMIT,2022,100,102,ICA/M1,≤6 h,NCCT ASPECTS,Large-core,203,mRS shift 90d,ASPECTS 3-5,
+angel,ANGEL-ASPECT,2023,230,225,ICA/M1,≤24 h,NCCT/CTP core,Large-core,456,mRS shift 90d,Core ≥70 mL,
+tension,TENSION,2023,124,122,ICA/M1,≤12 h,NCCT ASPECTS,Large-core,253,mRS shift 90d,ASPECTS 3-5,
+thrill,THRILL,2016,2,2,ICA/M1,≤6 h,Not reported,Early-window standard LVO,80,Not reported,IVT ineligible,Stopped early
+easi,EASI,2017,37,40,Mixed,≤6 h,Not reported,Early-window standard LVO,44,mRS 0-2 90d,Small RCT,
+laste,LASTE,2024,159,165,ICA/M1,≤6.5 h,NCCT ASPECTS ≤5,Large-core,324,mRS shift 90d,ASPECTS ≤5,Stopped early

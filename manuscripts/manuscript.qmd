@@ -173,24 +173,6 @@ Each point shows a trial's estimated intercept (control-group outcome) and slope
 
 ---
 
-## Supplementary Figures
-
-**Figure S1. Robustness of the intercept–slope correlation ($\rho$) to model specification.**
-
-Posterior medians and 95% credible intervals for $\rho$ under the primary proportional-odds ordinal model and three alternative prespecified models: an unequal-variance proportional-odds model, an adjacent-category ordinal model, and a binary model (mRS 0–2 vs 3–6). Estimates remain negative across all specifications.
-
-![Figure S1. Robustness of the intercept–slope correlation to model specification.](../Figures/figure_three.svg){width=100%}
-
----
-
-**Figure S2. Baseline prognosis and absolute benefit in functional independence across model specifications.**
-
-For each model, points show each trial's posterior median control-group probability of functional independence (x-axis) and posterior median absolute benefit in functional independence due to thrombectomy (y-axis). Functional independence is defined as mRS 0–2. The dashed line indicates no absolute benefit; the smooth curve is a descriptive fit with 95% uncertainty band.
-
-![Figure S2. Baseline prognosis and absolute benefit in functional independence.](../Figures/figure_four.svg){width=100%}
-
----
-
 ## References
 
 1. Ciccone A, Valvassori L, Nichelatti M, et al. Endovascular Treatment for Acute Ischemic Stroke. *N Engl J Med* 2013; **368**: 904--13.
