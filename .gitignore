@@ -2,22 +2,6 @@
 # .gitignore for Academic Claude Code Projects
 # ==============================================================================
 
-# LaTeX build artifacts
-*.aux
-*.bbl
-*.blg
-*.fdb_latexmk
-*.fls
-*.log
-*.nav
-*.out
-*.snm
-*.toc
-*.vrb
-*.synctex.gz
-*.run.xml
-*-blx.bib
-
 # Compiled PDFs (uncomment to track specific PDFs)
 # *.pdf
 

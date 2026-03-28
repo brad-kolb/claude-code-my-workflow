@@ -1,6 +1,6 @@
 ---
 name: slide-auditor
-description: Visual layout auditor for RevealJS and Beamer slides. Checks for overflow, font consistency, box fatigue, and spacing issues. Use proactively after creating or modifying slides.
+description: Visual layout auditor for RevealJS slides. Checks for overflow, font consistency, box fatigue, and spacing issues. Use proactively after creating or modifying slides.
 tools: Read, Grep, Glob
 model: inherit
 ---
@@ -16,7 +16,6 @@ Audit every slide in the specified file for visual layout issues. Produce a repo
 ### OVERFLOW
 - Content exceeding slide boundaries
 - Text running off the bottom of the slide
-- Overfull hbox potential in LaTeX
 - Tables or equations too wide for the slide
 
 ### FONT CONSISTENCY
@@ -41,21 +40,18 @@ Audit every slide in the specified file for visual layout issues. Produce a repo
 - Missing standout/transition slides at major conceptual pivots
 - Missing framing sentences before formal definitions
 - Semantic colors not used on binary contrasts (e.g., "Correct" vs "Wrong")
-- Note: Check `.claude/rules/no-pause-beamer.md` for overlay command policy
 
-### ENVIRONMENT PARITY (Beamer → Quarto)
-- Every Beamer custom environment must have a corresponding CSS class in the QMD
-- **Red flag:** Beamer box downgraded to plain text in Quarto
-- **Red flag:** CSS class used in QMD that doesn't exist in the theme SCSS
-- Verify the CSS visual roughly matches the Beamer visual (accent color, background tint)
+### CSS CLASS CONSISTENCY
+- CSS class used in QMD that doesn't exist in the theme SCSS
+- Box types used for wrong purpose (e.g., `.quotebox` without attribution)
 
 ### IMAGE & FIGURE PATHS
 - SVG references that might not resolve after deployment
 - Missing images or broken references
 - Images without explicit width/alignment settings
-- **PDF images in Quarto** — browsers cannot render PDFs inline; must be SVG
+- PDF images in Quarto — browsers cannot render PDFs inline; must be SVG
 
-### PLOTLY CHART QUALITY (Quarto only)
+### PLOTLY CHART QUALITY
 - Missing height override CSS
 - Charts appear squished or too small
 - Missing hover tooltips
@@ -65,16 +61,14 @@ Audit every slide in the specified file for visual layout issues. Produce a repo
 
 When recommending fixes, follow this priority:
 1. Reduce vertical spacing with negative margins
-2. Consolidate lists (remove blank lines)
-3. Move displayed equations inline
-4. Reduce image/SVG size (100% → 80% or 70%)
-5. **Last resort:** Font size reduction (never below 0.85em)
+2. **Use columns** (horizontal split)
+3. Consolidate lists (remove blank lines)
+4. **Use tabsets** (for 4+ related items)
+5. **Move to speaker notes** (instructor context)
+6. Reduce image width
+7. **Last resort:** Font size reduction (never below 0.85em)
 
-## Format-Specific Intelligence
-
-### For Quarto (.qmd) Files
-
-Suggest Quarto-native solutions:
+## Quarto-Native Solutions
 
 **Columns for horizontal breathing room:**
 - When text + large diagram overflow → suggest `:::: {.columns}` split
@@ -85,23 +79,6 @@ Suggest Quarto-native solutions:
 **Speaker notes for instructor context:**
 - When parenthetical remarks clutter a slide → suggest `::: {.notes}`
 
-**Quarto-specific overflow priority:**
-1. Reduce vertical spacing (negative margins)
-2. **Use columns** (horizontal split)
-3. Consolidate lists
-4. **Use tabsets** (for 4+ related items)
-5. **Move to speaker notes** (instructor context)
-6. Reduce image width
-7. Font reduction (last resort)
-
-### For Beamer (.tex) Files
-
-Standard LaTeX checks:
-- Overfull hbox potential (long equations, wide tables)
-- `\resizebox{}` needed on tables exceeding `\textwidth`
-- `\vspace{-Xem}` overuse (prefer structural changes like splitting slides)
-- `\footnotesize` or `\tiny` used unnecessarily (prefer splitting content)
-
 ## Report Format
 
 ```markdown
@@ -109,5 +86,4 @@ Standard LaTeX checks:
 - **Issue:** [description]
 - **Severity:** [High / Medium / Low]
 - **Recommendation:** [specific fix following spacing-first principle]
-- **Format-specific note:** [Quarto or Beamer specific suggestion, if applicable]
 ```

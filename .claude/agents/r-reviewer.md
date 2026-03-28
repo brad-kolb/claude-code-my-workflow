@@ -70,7 +70,7 @@ Produce a thorough, actionable code review report. You do NOT edit files — you
 ### 6. FIGURE QUALITY
 - [ ] Consistent color palette (check your project's standard colors)
 - [ ] Custom theme applied to all plots
-- [ ] Transparent background for Beamer figures: `bg = "transparent"`
+- [ ] Transparent background if needed: `bg = "transparent"`
 - [ ] Explicit dimensions in `ggsave()`: `width`, `height` specified
 - [ ] Axis labels: sentence case, no abbreviations, units included
 - [ ] Legend position: bottom, readable at projection size

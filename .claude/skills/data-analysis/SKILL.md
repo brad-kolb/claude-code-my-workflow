@@ -62,7 +62,7 @@ Based on the research question:
 
 **Figures:**
 - Use `ggplot2` with project theme
-- Set `bg = "transparent"` for Beamer compatibility
+- Set `bg = "transparent"` if needed for slide embedding
 - Include proper axis labels (sentence case, units)
 - Export with explicit dimensions: `ggsave(width = X, height = Y)`
 - Save as both `.pdf` and `.png`

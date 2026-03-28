@@ -47,7 +47,7 @@ You describe a task. For complex or ambiguous requests, Claude first creates a r
 
 ### Specialized Agents
 
-Instead of one general-purpose reviewer, 10 focused agents each check one dimension:
+Instead of one general-purpose reviewer, 8 focused agents each check one dimension:
 
 - **proofreader** — grammar/typos
 - **slide-auditor** — visual layout
@@ -59,7 +59,7 @@ Each is better at its narrow task than a generalist would be. The `/slide-excell
 
 ### Adversarial QA
 
-Two agents work in opposition: the **critic** reads both Beamer and Quarto and produces harsh findings. The **fixer** implements exactly what the critic found. They loop until the critic says "APPROVED" (or 5 rounds max). This catches errors that single-pass review misses.
+Two agents work in opposition: the **critic** audits Quarto output against rigorous quality standards and produces harsh findings. The **fixer** implements exactly what the critic found. They loop until the critic says "APPROVED" (or 5 rounds max). This catches errors that single-pass review misses.
 
 ### Quality Gates
 
@@ -70,7 +70,7 @@ Every file gets a score (0–100). Scores below threshold block the action:
 
 ### Context Survival
 
-Plans, specifications, and session logs survive auto-compression and session boundaries. The PreCompact hook saves a context snapshot before Claude's auto-compression triggers, ensuring critical decisions are never lost. MEMORY.md accumulates learning across sessions, so patterns discovered in one session inform future work.
+Plans, specifications, and session logs survive auto-compression and session boundaries because they're saved to disk. MEMORY.md accumulates learning across sessions, so patterns discovered in one session inform future work.
 
 ---
 
@@ -105,7 +105,7 @@ The guide covers Claude Code's latest capabilities:
 
 | Academic Task | How This Workflow Helps |
 |---------------|----------------------|
-| Lecture slides (Beamer/Quarto) | Full creation, translation, multi-agent review, deployment |
+| Lecture slides (Quarto) | Full creation, multi-agent review, deployment |
 | Research papers | Literature review, manuscript review, simulated peer review |
 | Data analysis | End-to-end R pipelines, replication verification, publication-ready output |
 | Replication packages | AEA-compliant packaging, reproducibility audit trails |
@@ -117,7 +117,7 @@ The guide covers Claude Code's latest capabilities:
 ## What's Included
 
 <details>
-<summary><strong>10 agents, 22 skills, 18 rules, 7 hooks</strong> (click to expand)</summary>
+<summary><strong>8 agents, 19 skills, 15 rules, 2 hooks</strong> (click to expand)</summary>
 
 ### Agents (`.claude/agents/`)
 
@@ -127,9 +127,7 @@ The guide covers Claude Code's latest capabilities:
 | `slide-auditor` | Visual layout audit (overflow, font consistency, spacing) |
 | `pedagogy-reviewer` | 13-pattern pedagogical review (narrative arc, notation density, pacing) |
 | `r-reviewer` | R code quality, reproducibility, and domain correctness |
-| `tikz-reviewer` | Merciless TikZ diagram visual critique |
-| `beamer-translator` | Beamer-to-Quarto translation specialist |
-| `quarto-critic` | Adversarial QA comparing Quarto against Beamer benchmark |
+| `quarto-critic` | Adversarial Quarto quality auditor |
 | `quarto-fixer` | Implements fixes from the critic agent |
 | `verifier` | End-to-end task completion verification |
 | `domain-reviewer` | **Template** for your field-specific substance reviewer |
@@ -138,16 +136,13 @@ The guide covers Claude Code's latest capabilities:
 
 | Skill | What It Does |
 |-------|-------------|
-| `/compile-latex` | 3-pass XeLaTeX compilation with bibtex |
 | `/deploy` | Render Quarto + sync to GitHub Pages |
-| `/extract-tikz` | TikZ diagrams to PDF to SVG pipeline |
 | `/proofread` | Launch proofreader on a file |
 | `/visual-audit` | Launch slide-auditor on a file |
 | `/pedagogy-review` | Launch pedagogy-reviewer on a file |
 | `/review-r` | Launch R code reviewer |
 | `/qa-quarto` | Adversarial critic-fixer loop (max 5 rounds) |
 | `/slide-excellence` | Combined multi-agent review |
-| `/translate-to-quarto` | Full 11-phase Beamer-to-Quarto translation |
 | `/validate-bib` | Cross-reference citations against bibliography |
 | `/devils-advocate` | Challenge design decisions before committing |
 | `/create-lecture` | Full lecture creation workflow |
@@ -190,17 +185,14 @@ Rules use path-scoped loading: **always-on** rules load every session (~100 line
 
 | Rule | Triggers On | What It Enforces |
 |------|------------|-----------------|
-| `verification-protocol` | `.tex`, `.qmd`, `docs/` | Task completion checklist |
-| `single-source-of-truth` | `Figures/`, `.tex`, `.qmd` | No content duplication; Beamer is authoritative |
-| `quality-gates` | `.tex`, `.qmd`, `*.R` | 80/90/95 scoring + tolerance thresholds |
+| `verification-protocol` | `.qmd`, `docs/` | Task completion checklist |
+| `single-source-of-truth` | `Figures/`, `.qmd` | No content duplication; Quarto is authoritative |
+| `quality-gates` | `.qmd`, `*.R` | 80/90/95 scoring + tolerance thresholds |
 | `r-code-conventions` | `*.R` | R coding standards + math line-length exception |
-| `tikz-visual-quality` | `.tex` | TikZ diagram visual standards |
-| `beamer-quarto-sync` | `.tex`, `.qmd` | Auto-sync Beamer edits to Quarto |
 | `pdf-processing` | `master_supporting_docs/` | Safe large PDF handling |
-| `proofreading-protocol` | `.tex`, `.qmd`, `quality_reports/` | Propose-first, then apply with approval |
-| `no-pause-beamer` | `.tex` | No overlay commands in Beamer |
+| `proofreading-protocol` | `.qmd`, `quality_reports/` | Propose-first, then apply with approval |
 | `replication-protocol` | `*.R` | Replicate original results before extending |
-| `knowledge-base-template` | `.tex`, `.qmd`, `*.R` | Notation/application registry template |
+| `knowledge-base-template` | `.qmd`, `*.R` | Notation/application registry template |
 | `orchestrator-research` | `*.R`, `explorations/` | Simple orchestrator for research (no multi-round reviews) |
 | `exploration-folder-protocol` | `explorations/` | Structured sandbox for experimental work |
 | `exploration-fast-track` | `explorations/` | Lightweight exploration workflow (60/100 threshold) |
@@ -226,10 +218,8 @@ Rules use path-scoped loading: **always-on** rules load every session (~100 line
 | Tool | Required For | Install |
 |------|-------------|---------|
 | [Claude Code](https://code.claude.com/docs/en/overview) | Everything | `npm install -g @anthropic-ai/claude-code` |
-| XeLaTeX | LaTeX compilation | [TeX Live](https://tug.org/texlive/) or [MacTeX](https://tug.org/mactex/) |
-| [Quarto](https://quarto.org) | Web slides | [quarto.org/docs/get-started](https://quarto.org/docs/get-started/) |
+| [Quarto](https://quarto.org) | Slides, papers, websites | [quarto.org/docs/get-started](https://quarto.org/docs/get-started/) |
 | R | Figures & analysis | [r-project.org](https://www.r-project.org/) |
-| pdf2svg | TikZ to SVG | `brew install pdf2svg` (macOS) |
 | [gh CLI](https://cli.github.com/) | PR workflow | `brew install gh` (macOS) |
 
 Not all tools are needed — install only what your project uses. Claude Code is the only hard requirement.
@@ -242,8 +232,7 @@ Not all tools are needed — install only what your project uses. Claude Code is
 2. **Customize the domain reviewer** (`.claude/agents/domain-reviewer.md`) with review lenses specific to your field
 3. **Update the color palette** in your Quarto theme SCSS file — change the color variables at the top
 4. **Add field-specific R pitfalls** to `.claude/rules/r-code-conventions.md`
-5. **Fill in the lecture mapping** in `.claude/rules/beamer-quarto-sync.md`
-6. **Customize the workflow quick reference** (`.claude/WORKFLOW_QUICK_REF.md`) with your non-negotiables and preferences
+5. **Customize the workflow quick reference** (`.claude/WORKFLOW_QUICK_REF.md`) with your non-negotiables and preferences
 7. **Set up the exploration folder** (`explorations/`) for experimental work
 
 ---

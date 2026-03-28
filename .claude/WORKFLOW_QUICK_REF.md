@@ -52,7 +52,7 @@ Repeat
 
 <!-- Replace with YOUR project's locked-in preferences -->
 
-- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths for LaTeX)
+- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths)
 - [YOUR SEED CONVENTION] (e.g., `set.seed()` once at top for stochastic code)
 - [YOUR FIGURE STANDARDS] (e.g., white bg, 300 DPI, custom theme)
 - [YOUR COLOR PALETTE] (e.g., institutional colors)

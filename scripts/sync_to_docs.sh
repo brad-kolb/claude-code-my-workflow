@@ -59,16 +59,7 @@ for html in *.html; do
     fi
 done
 
-# 3. Sync Beamer PDFs to docs/slides/
-echo "Syncing Beamer PDFs..."
-for pdf in "$REPO_ROOT/Slides/"*.pdf; do
-    if [ -f "$pdf" ]; then
-        echo "  Copying $(basename "$pdf")..."
-        cp "$pdf" "$DOCS_DIR/slides/"
-    fi
-done
-
-# 4. Sync R scripts to docs/files/code/
+# 3. Sync R scripts to docs/files/code/
 echo "Syncing R scripts..."
 mkdir -p "$DOCS_DIR/files/code"
 for rscript in "$REPO_ROOT/scripts/R/"*.R; do
@@ -78,7 +69,7 @@ for rscript in "$REPO_ROOT/scripts/R/"*.R; do
     fi
 done
 
-# 5. Sync Figures directory (using rsync for efficiency)
+# 4. Sync Figures directory (using rsync for efficiency)
 echo "Syncing Figures/..."
 if command -v rsync &> /dev/null; then
     rsync -av --delete "$REPO_ROOT/Figures/" "$DOCS_DIR/Figures/"
