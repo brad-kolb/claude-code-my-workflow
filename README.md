@@ -111,13 +111,14 @@ The guide covers Claude Code's latest capabilities:
 | Replication packages | AEA-compliant packaging, reproducibility audit trails |
 | Presentations | Rhetoric of decks principles, visual audit, cognitive load review |
 | Research proposals | Structured drafting with adversarial critique |
+| Knowledge bases | Ingest sources, compile wiki, query, lint — Karpathy-style LLM KB |
 
 ---
 
 ## What's Included
 
 <details>
-<summary><strong>8 agents, 19 skills, 15 rules, 2 hooks</strong> (click to expand)</summary>
+<summary><strong>8 agents, 24 skills, 16 rules, 2 hooks</strong> (click to expand)</summary>
 
 ### Agents (`.claude/agents/`)
 
@@ -155,6 +156,22 @@ The guide covers Claude Code's latest capabilities:
 | `/learn` | Extract non-obvious discoveries into persistent skills |
 | `/context-status` | Show session health and context usage |
 | `/deep-audit` | Repository-wide consistency audit |
+| `/kb-init` | Initialize new knowledge base topic |
+| `/kb-ingest` | Add source document, trigger wiki compilation |
+| `/kb-compile` | Compile/update wiki from raw sources |
+| `/kb-query` | Research question against the wiki |
+| `/kb-lint` | Health check wiki for issues |
+
+### Knowledge Base (Karpathy-Style)
+
+| Feature | What It Does |
+|---------|-------------|
+| LLM-compiled wiki | Raw sources compiled into linked markdown concepts, summaries, connections |
+| Per-topic KBs | Separate knowledge bases per research area in `kb/[topic]/` |
+| Incremental compilation | Only reprocesses new/changed sources |
+| Self-enhancing Q&A | Query answers filed back into the wiki |
+| Health checks | Lint for broken links, orphan concepts, inconsistencies, missing connections |
+| repoview browsing | GitHub-like local UI for reading the wiki |
 
 ### Research Workflow
 
@@ -196,6 +213,7 @@ Rules use path-scoped loading: **always-on** rules load every session (~100 line
 | `orchestrator-research` | `*.R`, `explorations/` | Simple orchestrator for research (no multi-round reviews) |
 | `exploration-folder-protocol` | `explorations/` | Structured sandbox for experimental work |
 | `exploration-fast-track` | `explorations/` | Lightweight exploration workflow (60/100 threshold) |
+| `kb-wiki-conventions` | `kb/` | Wiki structure, linking, naming, and compilation rules |
 
 ### Templates (`templates/`)
 
@@ -208,6 +226,11 @@ Rules use path-scoped loading: **always-on** rules load every session (~100 line
 | `requirements-spec.md` | MUST/SHOULD/MAY requirements framework with clarity status |
 | `constitutional-governance.md` | Template for defining non-negotiable principles vs. preferences |
 | `skill-template.md` | Academic skill creation template with domain-specific examples |
+| `kb-readme.md` | Knowledge base documentation template |
+| `kb-config.md` | Wiki conventions and settings template |
+| `kb-meta.md` | Per-topic metadata template |
+| `kb-concept.md` | Concept article structure template |
+| `kb-summary.md` | Source summary structure template |
 
 </details>
 
