@@ -35,6 +35,12 @@ CLAUDE.local.md
 # Quarto rendering artifacts
 .quarto/
 
+# Knowledge base raw sources (large/copyrighted — not tracked)
+kb/*/raw/*
+!kb/*/raw/.manifest.md
+# Uncomment to also ignore compiled wiki (default: tracked in git)
+# kb/*/wiki/*
+
 # Output artifacts — uncomment lines below based on your preference
 # *.rds
 # output/**/*.rds

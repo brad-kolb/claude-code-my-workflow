@@ -33,6 +33,7 @@
 ├── docs/                        # GitHub Pages (auto-generated)
 ├── scripts/                     # Utility scripts + R code
 ├── quality_reports/             # Plans, session logs, merge reports
+├── kb/                          # Knowledge bases (raw sources + LLM-compiled wikis)
 ├── explorations/                # Research sandbox (see rules)
 ├── templates/                   # Session log, quality report templates
 └── master_supporting_docs/      # Papers and reference materials
@@ -51,6 +52,9 @@ quarto render Quarto/file.qmd
 
 # Quality score
 python scripts/quality_score.py Quarto/file.qmd
+
+# Browse knowledge base wiki (requires repoview)
+./scripts/kb/launch-viewer.sh [topic-name]
 ```
 
 ---
@@ -88,25 +92,38 @@ python scripts/quality_score.py Quarto/file.qmd
 | `/learn [skill-name]` | Extract discovery into persistent skill |
 | `/context-status` | Show session health + context usage |
 | `/deep-audit` | Repository-wide consistency audit |
+| `/kb-init [topic]` | Initialize new knowledge base topic |
+| `/kb-ingest [file] [topic]` | Add source, trigger wiki compilation |
+| `/kb-compile [topic]` | Compile/update wiki from raw sources |
+| `/kb-query [question]` | Research question against the wiki |
+| `/kb-lint [topic]` | Health check wiki for issues |
 
 ---
 
 ## Quarto CSS Classes
 
-<!-- CUSTOMIZE: Replace the example entries below with your own
-     Quarto CSS classes from your theme SCSS. -->
-
-| Class              | Effect        | Use Case       |
-|--------------------|---------------|----------------|
-| `[.your-class]`    | [Description] | [When to use]  |
-
-<!-- Example entries (delete and replace with yours):
-| `.smaller` | 85% font | Dense content slides |
-| `.positive` | Green bold | Good annotations |
-| `.keybox` | Gold background box | Key points |
-| `.highlightbox` | Gold left-accent box | Highlights |
-| `.definitionbox` | Blue-bordered box | Formal definitions |
--->
+| Class | Effect | Use Case |
+|-------|--------|----------|
+| `.primary` | Deep slate text (#1e293b) | Headings, strong emphasis |
+| `.accent` | Teal text (#0d9488) | Secondary emphasis, links |
+| `.highlight` | Amber text (#f59e0b) | Attention, alerts |
+| `.hi` / `.hi-accent` / `.hi-amber` | Bold colored text | Inline emphasis |
+| `.hi-green` / `.hi-red` / `.hi-slate` | Semantic bold text | Status, annotation |
+| `.positive` / `.negative` / `.neutral` | Semantic colors | Diagrams, comparisons |
+| `.keybox` | Teal-bordered card | Key takeaways |
+| `.highlightbox` | Amber-bordered card | Important callouts |
+| `.methodbox` | Slate-bordered card | Methods, definitions |
+| `.assumptionbox` | Teal full-border card | Assumptions, conditions |
+| `.resultbox` | Teal emphasized card | Key results |
+| `.quotebox` | Italic with quote mark | Quotations |
+| `.eqbox` | Subtle background | Equations |
+| `.softbox` | Light italic card | Aside, commentary |
+| `.smaller` / `.smallest` / `.bigger` | Font size adjustment | Content density |
+| `.compact` | Reduced spacing | Dense slides |
+| `.col-left` / `.col-right` | 47/47 columns | Two-column layout |
+| `.col-left-wide` / `.col-right-narrow` | 63/33 columns | Asymmetric layout |
+| `.footnote` | Bottom-positioned small text | Citations, notes |
+| `.mono` | JetBrains Mono | Code-like text |
 
 ---
 
